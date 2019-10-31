@@ -1,0 +1,78 @@
+---
+title: "Packages"
+author: "Adarsh"
+date: "10/22/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Functions Revisited
+
+Source my functions from last day
+```{r}
+source("http://tinyurl.com/rescale-R")
+```
+```{r}
+x <- c(1,2,NA,3,NA)
+is.na(x)
+```
+
+```{r}
+both_na <- function(x,y) {
+  sum(is.na(x) & is.na(y))
+}
+```
+```{r}
+x <- c(1,NA,NA)
+y1 <- c(1,NA,NA)
+y2 <-c(1,NA,NA,NA,NA,NA,NA)
+which(is.na(y2))
+both_na(x,y2)
+```
+
+```{r}
+both_na <- function(x,y) {
+  if(length(x)!=length(y)){
+    stop("Inputs x and y should be same length")
+  }
+  sum(is.na(x) & is.na(y))
+}
+```
+
+```{r}
+x <- c(1,NA,NA)
+y1 <- c(1,NA,NA)
+y2 <-c(1,NA,NA,NA,NA,NA,NA)
+both_na(x,y2)
+```
+
+```{r}
+grades <- function(x){
+  if(sum(is.na(x))==0){
+    min  = which.min(x)
+    total = sum(x[-min])
+  }
+  else{
+    total = sum(x,na.rm = TRUE)
+  }
+  grade = total/(length(x)-1)
+  return(grade)
+}
+```
+
+```{r}
+x<- c(100,100,100,NA,NA)
+grades(x)
+```
+```{r}
+url<- "https://tinyurl.com/gradeinput"
+hw <- read.csv(url,row.names = 1)
+```
+
+```{r}
+apply(hw,1,grades)
+```
+
