@@ -1,0 +1,184 @@
+---
+title: "miniproject"
+author: "Adarsh"
+date: "10/29/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Save your input data file to a new 'data' directory
+fna.data <- "WisconsinCancer.csv"
+
+# Complete the following code to input the data and store as wisc.df
+wisc.df <- read.csv(fna.data)
+```
+
+```{r}
+head(wisc.df)
+```
+
+```{r}
+# Convert the features of the data: wisc.data
+wisc.data <- as.matrix(wisc.df[3:32])
+```
+
+```{r}
+row.names(wisc.data) <- wisc.df$id
+```
+
+```{r}
+nrow(wisc.data)
+```
+We have 'r nrow(wisc.df)' samples in the dataset
+
+```{r}
+diagnosis <- wisc.df$diagnosis
+```
+
+```{r}
+diagnosis
+```
+```{r}
+table(diagnosis)
+```
+```{r}
+length(grep('_mean',colnames(wisc.df),value = TRUE))
+```
+
+## PCA
+
+```{r}
+# Check column means and standard deviations
+round(colMeans(wisc.data),3)
+
+round(apply(wisc.data,2,sd),3)
+```
+```{r}
+wisc.pr <- prcomp(wisc.data,scale = TRUE)
+summary(wisc.pr)
+```
+
+
+
+```{r}
+biplot(wisc.pr,scale = TRUE)
+
+```
+
+
+```{r}
+plot(wisc.pr$x[,1], wisc.pr$x[,2],col = diagnosis,xlab = "PC1", ylab = "PC2")
+```
+```{r}
+plot(wisc.pr$x[,1], wisc.pr$x[,3],col = diagnosis,xlab = "PC1", ylab = "PC3")
+```
+```{r}
+plot(wisc.pr)
+```
+
+```{r}
+## ggplot based graph
+#install.packages("factoextra")
+library(factoextra)
+fviz_eig(wisc.pr, addlabels = TRUE)
+```
+
+
+## Heirarchial Clustering
+
+```{r}
+data.scaled <- scale(wisc.data)
+```
+
+```{r}
+data.dist <- dist(data.scaled)
+```
+
+
+```{r}
+wisc.hclust <- hclust(data.dist, method = "complete")
+
+```
+
+```{r}
+plot(wisc.hclust)
+abline(h=19, col="red",lty=2)
+
+```
+```{r}
+wisc.hclust.clusters <- cutree(wisc.hclust, k=4)
+```
+
+
+```{r}
+table(wisc.hclust.clusters, diagnosis)
+```
+```{r}
+wisc.hclust.clusters <- cutree(wisc.hclust, k=5)
+table(wisc.hclust.clusters, diagnosis)
+
+```
+
+
+```{r}
+new_data <-wisc.pr$x[,1:7]
+```
+
+```{r}
+data.dist <- dist(new_data)
+```
+
+```{r}
+wisc.pr.hclust <- hclust(data.dist, method = "ward.D2")
+plot(wisc.hclust)
+
+```
+
+```{r}
+grps <- cutree(wisc.pr.hclust, k=2)
+table(grps)
+```
+
+```{r}
+table(grps, diagnosis)
+```
+
+```{r}
+plot(wisc.pr$x[,1:2], col=grps)
+
+```
+
+```{r}
+plot(wisc.pr$x[,1:2], col=grps)
+
+```
+
+```{r}
+g <- as.factor(grps)
+levels(g)
+g <- relevel(g,2)
+levels(g)
+plot(wisc.pr$x[,1:2], col=g)
+
+```
+
+## Prediction
+
+```{r}
+url <- "https://tinyurl.com/new-samples-CSV"
+new <- read.csv(url)
+npc <- predict(wisc.pr, newdata=new)
+npc
+
+```
+
+```{r}
+plot(wisc.pr$x[,1:2], col=g)
+points(npc[,1], npc[,2], col="blue", pch=16, cex=3)
+text(npc[,1], npc[,2], c(1,2), col="white")
+```
+
