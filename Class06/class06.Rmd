@@ -1,0 +1,89 @@
+---
+title: "Class 6 R Function"
+author: "Adarsh"
+date: "10/17/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# This is H1
+This is my lab 6 work from **BIMM 143**
+
+```{r}
+add <- function(x, y=1){
+    x+y
+}
+
+```
+```{r}
+add(1)
+add(5,5)
+```
+
+````{r}
+add(x = 1, y=4)
+add(c(1,2,3),c(2,3,4))
+```
+```{r}
+rescale <- function(x) {
+ rng <-range(x,na.rm =TRUE)
+ (x - rng[1]) / (rng[2] - rng[1])
+}
+# Test on a small example where you know the answer
+rescale(c(1,2,NA,3,10))
+
+```
+
+```{r}
+rescale2 <- function(x, na.rm=TRUE, plot=FALSE) {
+ rng <-range(x, na.rm=na.rm)
+ print("Hello")
+ answer <- (x - rng[1]) / (rng[2] - rng[1])
+ print("is it me you are looking for?")
+ if(plot) {
+ plot(answer, typ="b", lwd=4)
+ }
+ print("I can see it in ...")
+ return(answer)
+}
+```
+
+```{r}
+rescale2(c(1:10),plot = TRUE)
+```
+
+# Section2 of hands-on sheet
+
+Installing the **bio3d** package
+
+```{r}
+#install.packages(“bio3d”)
+```
+
+```{r}
+library(bio3d)
+s1 <- read.pdb("4AKE") # kinase with drug
+s2 <- read.pdb("1AKE") # kinase no drug
+s3 <- read.pdb("1E4Y") # kinase with drug
+
+s1.chainA <- trim.pdb(s1, chain="A", elety="CA")
+s2.chainA <- trim.pdb(s2, chain="A", elety="CA")
+s3.chainA <- trim.pdb(s1, chain="A", elety="CA")
+
+s1.b <- s1.chainA$atom$b
+s2.b <- s2.chainA$atom$b
+s3.b <- s3.chainA$atom$b
+
+plotb3(s1.b, sse=s1.chainA, typ="l", ylab="Bfactor")
+plotb3(s2.b, sse=s2.chainA, typ="l", ylab="Bfactor")
+plotb3(s3.b, sse=s3.chainA, typ="l", ylab="Bfactor")
+hc <- hclust( dist( rbind(s1.b, s2.b, s3.b) ) )
+plot(hc)
+```
+
+
+
+
