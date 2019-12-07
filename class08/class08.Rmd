@@ -1,0 +1,105 @@
+---
+title: "Class08_ML"
+author: "Adarsh"
+date: "10/24/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Generate some example data for clustering
+tmp <- c(rnorm(30,-3), rnorm(30,3))
+x <- cbind(x=tmp, y=rev(tmp))
+plot(x)
+```
+
+```{r}
+k <- kmeans(x,centers = 2,nstart =20)
+```
+
+```{r}
+k
+```
+
+```{r}
+k$cluster
+```
+
+```{r}
+plot(x,col = k$cluster)
+points(k$centers,col = "blue",pch =15)
+```
+
+## Heirarchial Clustering in R
+The 'hclust()' function needs distance matrix from 'dist()' function as input for Euclidean distance
+
+```{r}
+# First we need to calculate point (dis)similarity
+# as the Euclidean distance between observations
+dist_matrix <- dist(x)
+# The hclust() function returns a hierarchical
+# clustering model
+hc <- hclust(dist_matrix)
+# the print method is not so useful here
+hc
+```
+
+```{r}
+plot(hc)
+abline(h=6, col = "red")
+groups <-cutree(hc, h = 6)
+```
+
+
+
+```{r}
+plot(x,col = groups)
+```
+
+```{r}
+# Step 1. Generate some example data for clustering
+x <- rbind(
+ matrix(rnorm(100, mean=0, sd = 0.3), ncol = 2), # c1
+ matrix(rnorm(100, mean = 1, sd = 0.3), ncol = 2), # c2
+ matrix(c(rnorm(50, mean = 1, sd = 0.3), # c3
+ rnorm(50, mean = 0, sd = 0.3)), ncol = 2))
+colnames(x) <- c("x", "y")
+# Step 2. Plot the data without clustering
+plot(x)
+# Step 3. Generate colors for known clusters
+# (just so we can compare to hclust results)
+col <- as.factor( rep(c("c1","c2","c3"), each=50) )
+plot(x, col=col)
+```
+```{r}
+hc <- hclust(dist(x))
+hc
+```
+
+```{r}
+plot(hc)
+abline(h=2, col = "red")
+groups <-cutree(hc, k = 3)
+```
+```{r}
+plot(x, col = groups)
+```
+```{r}
+k <- kmeans(x,centers = 3,nstart =20)
+plot(x,col = k$cluster)
+points(k$centers,col = "blue",pch =15)
+```
+
+Ponts in Each Cluster
+```{r}
+table(groups)
+```
+
+Cross-Tabulate with known results
+```{r}
+table(groups,col)
+```
+

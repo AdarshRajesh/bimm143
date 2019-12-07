@@ -1,0 +1,34 @@
+---
+title: "PCA"
+author: "Adarsh"
+date: "10/24/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+mydata <- read.csv("https://tinyurl.com/expression-CSV",
+ row.names=1)
+```
+
+```{r}
+dim(mydata)
+```
+
+```{r}
+head(mydata)
+```
+
+
+```{r}
+pca <- prcomp(t(mydata), scale=TRUE) 
+```
+
+```{r}
+pca 
+```
+
+
