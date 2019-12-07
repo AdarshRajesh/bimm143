@@ -1,8 +1,8 @@
 ---
-title: "Miniproject"
+title: "miniproject"
 author: "Adarsh"
 date: "10/29/2019"
-output: github_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}

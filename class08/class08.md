@@ -24,16 +24,16 @@ k
     ## 
     ## Cluster means:
     ##           x         y
-    ## 1  2.880545 -3.264177
-    ## 2 -3.264177  2.880545
+    ## 1  2.789608 -3.098474
+    ## 2 -3.098474  2.789608
     ## 
     ## Clustering vector:
     ##  [1] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 1 1 1 1 1
     ## [36] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
     ## 
     ## Within cluster sum of squares by cluster:
-    ## [1] 58.21735 58.21735
-    ##  (between_SS / total_SS =  90.7 %)
+    ## [1] 46.1866 46.1866
+    ##  (between_SS / total_SS =  91.8 %)
     ## 
     ## Available components:
     ## 
@@ -165,7 +165,7 @@ table(groups)
 
     ## groups
     ##  1  2  3 
-    ## 70 33 47
+    ## 50 59 41
 
 Cross-Tabulate with known results
 
@@ -175,6 +175,6 @@ table(groups,col)
 
     ##       col
     ## groups c1 c2 c3
-    ##      1 17  5 48
-    ##      2 33  0  0
-    ##      3  0 45  2
+    ##      1 44  0  6
+    ##      2  6 10 43
+    ##      3  0 40  1
